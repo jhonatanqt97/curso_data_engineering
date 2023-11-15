@@ -46,6 +46,9 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id
+            tests:
+              - unique
+              - not_null
           - name: shipping_service
           - name: shipping_cost
           - name: address_id
@@ -54,6 +57,10 @@ sources:
           - name: estimated_delivery_at
           - name: order_cost
           - name: user_id
+            tests:
+              - relationships:
+                  to: ref('stg_users')
+                  field: user_id
           - name: order_total
           - name: delivered_at
           - name: tracking_id
@@ -64,7 +71,9 @@ sources:
       - name: order_items
         loaded_at_field: _fivetran_synced
         columns:
-          - name: order_id
+          - name: (order_id || product_id)
+            tests:
+              - unique        
           - name: product_id
           - name: quantity
           - name: _fivetra_deleted
