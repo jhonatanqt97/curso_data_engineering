@@ -19,6 +19,8 @@ sources:
 
       - name: budget
         loaded_at_field: _fivetran_synced
+        description: >
+          Data about budget in demo.
         columns:
           - name: _row
           - name: product_id
