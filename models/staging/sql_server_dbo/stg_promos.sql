@@ -9,7 +9,7 @@ source as (
 renamed as (
 
     select
-        promo_id,
+        md5(promo_id) as promo_id,
         discount,
         status,
         _fivetran_deleted,
