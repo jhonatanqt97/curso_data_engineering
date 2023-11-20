@@ -9,7 +9,8 @@ source as (
 renamed as (
 
     select
-        md5(promo_id) as promo_id,
+       {{ dbt_utils.generate_surrogate_key(['promo_id'])}} as promo_id_key,
+        promo_id as desc_promo_id,
         discount,
         status,
         _fivetran_deleted,
@@ -20,3 +21,9 @@ renamed as (
 )
 
 select * from renamed
+
+union all 
+(
+    select 
+    '9999'as promo_id, 'no promo' as desc_promo_id, '0' as discount, 'active' as status, '0' as _fivetran_deleted, '0'as _fivetran_synced
+)
