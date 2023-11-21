@@ -13,8 +13,8 @@ renamed as (
         decode(shipping_service,'','vacio',shipping_service) AS shipping_service,
         shipping_cost,
         address_id,
-        created_at,
-        decode(promo_id,'','sin promo',promo_id) AS promo_id,
+        cast(created_at as timestamp_ltz) as created_at  ,
+        decode(promo_id,'','sin promo',{{ dbt_utils.generate_surrogate_key(['promo_id'])}}) AS promo_id,
         decode(estimated_delivery_at,null,'9999',estimated_delivery_at) AS estimated_delivery_at,
         order_cost,
         user_id,
@@ -26,12 +26,10 @@ renamed as (
         _fivetran_synced
 
     from source
-
-    renamed casted as (
-        cast(order_id as varchar(50)) as order_id,
-        cast(promos)) as order_id,
-    )
- 
 )
+
+
+ 
+
 
 select * from renamed
