@@ -1,4 +1,4 @@
-with 
+ with 
 
 source as (
 
@@ -16,9 +16,7 @@ renamed as (
         state,
         _fivetran_deleted,
         _fivetran_synced
-
     from source
-
 )
 
 select * from renamed

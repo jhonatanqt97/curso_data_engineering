@@ -10,12 +10,12 @@ renamed as (
 
     select
         user_id,
-        updated_at,
+        cast(updated_at as timestamp_ltz)as updated_at_utc,
         address_id,
         last_name,
-        created_at,
+        cast(created_at as timestamp_ltz)as created_at_utc,
         phone_number,
-        total_orders,
+        decode(total_orders,null,'9999',total_orders) AS total_orders,
         first_name,
         email,
         _fivetran_deleted,

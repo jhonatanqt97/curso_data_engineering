@@ -7,8 +7,8 @@
 
 
 WITH stg_orders AS (
-    SELECT * 
-    FROM {{ source('sql_server_dbo','orders') }}
+    SELECT * FROM {{ source('sql_server_dbo','orders') }}
+    
 {% if is_incremental() %}
 
 	  where _fivetran_synced > (select max(_fivetran_synced) from {{ this }})
@@ -47,14 +47,14 @@ renamed_casted as (
         shipping_service,
         shipping_cost as shipping_cost_$,
         address_id,
-        cast(created_at as timestamp_ltz) as created_at,
+        cast(created_at as timestamp_ltz) as created_at_utc,
         cast(
             case
              when promo_id= '9999' then '9999'
              else {{ dbt_utils.generate_surrogate_key(['promo_id'])}}
              end as varchar(50) 
         ) as promo_id,
-        cast(estimated_delivery_at as timestamp_ltz) as estimated_delivery_at,
+        cast(estimated_delivery_at as timestamp_ltz) as estimated_delivery_at_utc,
         order_cost as order_cost_$,
         user_id,
         order_total as order_total_$,

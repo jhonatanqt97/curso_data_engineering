@@ -1,16 +1,15 @@
-with 
-
+with
 source as (
-
-    select * from {{ source('sql_server_dbo', 'products') }}
-
+select *  from {{ source('sql_server_dbo', 'products') }}
 ),
+
+
 
 renamed as (
 
     select
         product_id,
-        price,
+        price as price_$,
         name,
         inventory,
         _fivetran_deleted,
