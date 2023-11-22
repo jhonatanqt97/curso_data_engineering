@@ -45,7 +45,7 @@ renamed_casted as (
     select
         order_id,
         shipping_service,
-        shipping_cost,
+        shipping_cost as shipping_cost_$,
         address_id,
         cast(created_at as timestamp_ltz) as created_at,
         cast(
@@ -55,9 +55,9 @@ renamed_casted as (
              end as varchar(50) 
         ) as promo_id,
         cast(estimated_delivery_at as timestamp_ltz) as estimated_delivery_at,
-        order_cost,
+        order_cost as order_cost_$,
         user_id,
-        order_total,
+        order_total as order_total_$,
         cast(delivered_at as timestamp_ltz) as delivered_at,
         tracking_id,
         status,
