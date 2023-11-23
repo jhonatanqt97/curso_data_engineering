@@ -6,10 +6,10 @@ source as (
 
 ),
 
-renamed as (
+order_items as (
 
     select
-        concat(order_id,product_id) as order_product_id,
+        concat(order_id,product_id) as id_order_product,
         quantity,
         _fivetran_deleted,
         _fivetran_synced
@@ -18,4 +18,4 @@ renamed as (
 
 )
 
-select * from renamed
+select * from order_items

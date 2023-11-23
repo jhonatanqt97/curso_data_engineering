@@ -5,10 +5,10 @@ select *  from {{ source('sql_server_dbo', 'products') }}
 
 
 
-renamed as (
+products as (
 
     select
-        product_id,
+        product_id as id_product,
         price as price_$,
         name,
         inventory,
@@ -19,4 +19,4 @@ renamed as (
 
 )
 
-select * from renamed
+select * from products

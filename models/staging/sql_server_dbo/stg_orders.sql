@@ -16,7 +16,7 @@ WITH stg_orders AS (
 {% endif %}
     ),
 
-renamed as (
+orders as (
 
     select
         order_id,
@@ -40,33 +40,33 @@ renamed as (
  
 ),
 
-renamed_casted as (
+orders_casted as (
 
     select
-        order_id,
+        order_id as id_order,
         shipping_service,
         shipping_cost as shipping_cost_$,
-        address_id,
+        address_id as id_address,
         cast(created_at as timestamp_ltz) as created_at_utc,
         cast(
             case
              when promo_id= '9999' then '9999'
              else {{ dbt_utils.generate_surrogate_key(['promo_id'])}}
              end as varchar(50) 
-        ) as promo_id,
+        ) as id_promo,
         cast(estimated_delivery_at as timestamp_ltz) as estimated_delivery_at_utc,
         order_cost as order_cost_$,
-        user_id,
+        user_id as id_user,
         order_total as order_total_$,
         cast(delivered_at as timestamp_ltz) as delivered_at,
-        tracking_id,
+        tracking_id as id_tracking,
         status,
         _fivetran_deleted,
         _fivetran_synced
 
-    from renamed
+    from orders
 
 )
    
 
-select * from renamed_casted
+select * from orders_casted

@@ -6,10 +6,10 @@ source as (
 
 ),
 
-renamed as (
+stg_addresses as (
 
     select
-        address_id,
+        address_id as id_address,
         zipcode,
         country,
         address,
@@ -19,4 +19,4 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * from stg_addresses

@@ -6,12 +6,12 @@ source as (
 
 ),
 
-renamed as (
+users as (
 
     select
-        user_id,
+        user_id as id_user,
         cast(updated_at as timestamp_ltz)as updated_at_utc,
-        address_id,
+        address_id as id_address,
         last_name,
         cast(created_at as timestamp_ltz)as created_at_utc,
         phone_number,
@@ -25,4 +25,4 @@ renamed as (
 
 )
 
-select * from renamed
+select * from users
