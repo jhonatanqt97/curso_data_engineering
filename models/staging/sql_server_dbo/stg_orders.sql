@@ -1,19 +1,9 @@
-{{ config(
-    materialized='incremental',
-    unique_key= 'order_id',
-    on_schema_change='fail'
-    ) 
-    }}
 
 
-WITH stg_orders AS (
+WITH source AS (
     SELECT * FROM {{ source('sql_server_dbo','orders') }}
     
-{% if is_incremental() %}
 
-	  where _fivetran_synced > (select max(_fivetran_synced) from {{ this }})
-
-{% endif %}
     ),
 
 orders as (
@@ -31,11 +21,12 @@ orders as (
         order_total,
         decode(delivered_at,null,'9999',delivered_at) AS delivered_at,
         decode(tracking_id,'','vacio',tracking_id) AS tracking_id,
-        status,
+        status as des_status,
+        {{ dbt_utils.generate_surrogate_key(['status'])}} as status,
         _fivetran_deleted,
         _fivetran_synced
 
-    from stg_orders
+    from source
 
  
 ),
@@ -60,9 +51,10 @@ orders_casted as (
         order_total as order_total_$,
         cast(delivered_at as timestamp_ltz) as delivered_at,
         tracking_id as id_tracking,
+        des_status,
         status,
         _fivetran_deleted,
-        _fivetran_synced
+        _fivetran_synced 
 
     from orders
 
