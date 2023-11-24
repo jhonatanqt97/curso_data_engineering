@@ -22,14 +22,10 @@ combinacion as (
 
     select 
         distinct({{ dbt_utils.generate_surrogate_key(['status'])}}) as  id_status,
-        status
+        des_status
 
     from orders
 
 )
 
 select * from combinacion
-
-
-
-
