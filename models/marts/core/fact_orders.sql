@@ -18,13 +18,15 @@ orders as (
         order_total_$,
         delivered_at,
         id_tracking,
-        O.id_status,
+        status,
+        LEFT(REPLACE({{ dbt_date.round_timestamp("delivered_at")}}, '-', ''), 8) as id_delivered_at,
         O._fivetran_synced  
     from stg_orders O
     left join {{ref('dim_addresses')}} A on O.id_address = A.id_address
     left join {{ref('dim_promos')}} P on O.id_promo = P.id_promo
     left join {{ref('dim_users')}} U on O.id_user = U.id_user
-    left join {{ref('dim_status')}} S on S.id_status = O.id_status
+    left join {{ref('dim_tiempo')}} T on id_delivered_at = T.id_date
+    
 )
 
 select * from orders

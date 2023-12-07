@@ -9,7 +9,6 @@ promos as (
     select
         promo_id as desc_promo,
         {{ dbt_utils.generate_surrogate_key(['promo_id'])}} as id_promo,
-        status as desc_status,
         status,
         discount,
         _fivetran_deleted,
@@ -18,5 +17,7 @@ promos as (
     from source
 
 )
+
+
 
 select * from promos
