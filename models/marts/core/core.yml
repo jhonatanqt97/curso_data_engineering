@@ -1,0 +1,289 @@
+version: 2
+
+models:
+  - name: dim_products
+    description: ""
+    columns:
+      - name: id_product
+        data_type: varchar
+        description: ""
+
+      - name: price_$
+        data_type: float
+        description: ""
+
+      - name: name
+        data_type: varchar
+        description: ""
+
+      - name: inventory
+        data_type: number
+        description: ""
+
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: ""
+
+  - name: dim_addresses
+    description: ""
+    columns:
+      - name: id_address
+        data_type: varchar
+        description: ""
+
+      - name: zipcode
+        data_type: number
+        description: ""
+
+      - name: country
+        data_type: varchar
+        description: ""
+
+      - name: address
+        data_type: varchar
+        description: ""
+
+      - name: state
+        data_type: varchar
+        description: ""
+
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: ""
+
+  - name: dim_event_type
+    description: ""
+    columns:
+      - name: id_event_type
+        data_type: varchar
+        description: ""
+
+      - name: desc_event_type
+        data_type: varchar
+        description: ""
+
+  - name: dim_products
+    description: ""
+    columns:
+      - name: id_product
+        data_type: varchar
+        description: ""
+
+      - name: price_$
+        data_type: float
+        description: ""
+
+      - name: name
+        data_type: varchar
+        description: ""
+
+      - name: inventory
+        data_type: number
+        description: ""
+
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: ""
+
+  - name: dim_promos
+    description: ""
+    columns:
+      - name: desc_promo
+        data_type: varchar
+        description: ""
+
+      - name: id_promo
+        data_type: varchar
+        description: ""
+
+      - name: status
+        data_type: varchar
+        description: ""
+
+      - name: discount
+        data_type: number
+        description: ""
+
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: ""
+
+  - name: dim_tiempo
+    description: ""
+    columns:
+      - name: fecha_forecast
+        data_type: date
+        description: ""
+
+      - name: id_date
+        data_type: number
+        description: ""
+
+      - name: anio
+        data_type: number
+        description: ""
+
+      - name: mes
+        data_type: number
+        description: ""
+
+      - name: desc_mes
+        data_type: varchar
+        description: ""
+
+      - name: id_anio_mes
+        data_type: number
+        description: ""
+
+      - name: dia_previo
+        data_type: date
+        description: ""
+
+      - name: anio_semana_dia
+        data_type: varchar
+        description: ""
+
+      - name: semana
+        data_type: number
+        description: ""
+
+  - name: dim_users
+    description: ""
+    columns:
+      - name: id_user
+        data_type: varchar
+        description: ""
+
+      - name: updated_at_utc
+        data_type: timestamp_ltz
+        description: ""
+
+      - name: id_address
+        data_type: varchar
+        description: ""
+
+      - name: last_name
+        data_type: varchar
+        description: ""
+
+      - name: created_at_utc
+        data_type: timestamp_ltz
+        description: ""
+
+      - name: phone_number
+        data_type: varchar
+        description: ""
+
+      - name: first_name
+        data_type: varchar
+        description: ""
+
+      - name: email
+        data_type: varchar
+        description: ""
+
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: ""
+
+  - name: fact_events
+    description: ""
+    columns:
+      - name: id_event
+        data_type: varchar
+        description: ""
+
+      - name: page_url
+        data_type: varchar
+        description: ""
+
+      - name: id_event_type
+        data_type: varchar
+        description: ""
+
+      - name: id_user
+        data_type: varchar
+        description: ""
+
+      - name: id_product
+        data_type: varchar
+        description: ""
+
+      - name: id_session
+        data_type: varchar
+        description: ""
+
+      - name: created_at_utc
+        data_type: timestamp_ltz
+        description: ""
+
+      - name: id_created_at_utc
+        data_type: varchar
+        description: ""
+
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: ""
+
+  - name: fact_orders
+    description: ""
+    columns:
+      - name: id_order
+        data_type: varchar
+        description: ""
+
+      - name: shipping_service
+        data_type: varchar
+        description: ""
+
+      - name: shipping_cost_$
+        data_type: float
+        description: ""
+
+      - name: id_address
+        data_type: varchar
+        description: ""
+
+      - name: created_at_utc
+        data_type: timestamp_ltz
+        description: ""
+
+      - name: id_promo
+        data_type: varchar
+        description: ""
+
+      - name: estimated_delivery_at_utc
+        data_type: timestamp_ltz
+        description: ""
+
+      - name: order_cost_$
+        data_type: float
+        description: ""
+
+      - name: id_user
+        data_type: varchar
+        description: ""
+
+      - name: order_total_$
+        data_type: float
+        description: ""
+
+      - name: delivered_at
+        data_type: timestamp_ltz
+        description: ""
+
+      - name: id_tracking
+        data_type: varchar
+        description: ""
+
+      - name: status
+        data_type: varchar
+        description: ""
+
+      - name: id_delivered_at
+        data_type: varchar
+        description: ""
+
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: ""
