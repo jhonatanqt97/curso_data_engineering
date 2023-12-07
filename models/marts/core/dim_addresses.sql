@@ -12,7 +12,6 @@ address as (
         country,
         address,
         state,
-        _fivetran_deleted,
         _fivetran_synced
     from stg_addresses
 )

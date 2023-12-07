@@ -11,7 +11,6 @@ productos as (
        price_$,
        name,
        inventory,
-       _fivetran_deleted,
        _fivetran_synced
     from products
 )

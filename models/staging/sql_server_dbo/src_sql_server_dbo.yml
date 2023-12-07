@@ -45,11 +45,10 @@ sources:
               - not_null
           - name: page_url
           - name: event_type
-          - name: user_id
             tests:
-              - relationships:
-                  field: user_id
-                  to: ref('users')
+              - accepted_values:
+                  values: ['checkout','package_shipped','add_to_cart','page_view']
+          - name: user_id
           - name: product_id
           - name: session_id
           - name: created_at
@@ -61,17 +60,43 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id
+            tests:
+              - not_null
+              - unique   
           - name: shipping_service
           - name: shipping_cost
+            tests:
+              - not_null
+              - positive_value    
           - name: address_id
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo', 'addresses')
+                  field: address_id
           - name: created_at
+            tests:
+              - dbt_expectations.expect_column_values_to_match_regex:
+                  regex: r"\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[1-2]\d|3[0-1])T(?:[0-1]\d|2[0-3]):[0-5]\d:[0-5]\d-(?:[0-1]\d|2[0-3]):[0-5]\d" 
           - name: promo_id
+            tests: 
+              - relationships:
+                  to: source('sql_server_dbo', 'promos')
+                  field: promo_id
+                   where length(promo_id) > 0 
           - name: estimated_delivery_at
           - name: order_cost
+            tests:
+              - positive_value
+              - not_null 
           - name: user_id
           - name: order_total
+            tests:
+              - not_null
+              - positive_value    
           - name: delivered_at
           - name: tracking_id
+            tests:
+              - not_null
           - name: status
             tests:
               - accepted_values:
@@ -82,9 +107,15 @@ sources:
       - name: order_items
         loaded_at_field: _fivetran_synced
         columns:
-          - name: order_id      
+          - name: order_id
+            tests:
+              - not_null
+              - unique      
           - name: product_id
           - name: quantity
+            tests:
+              - not_null
+              - positive_value
           - name: _fivetra_deleted
           - name: _fivetran_synced
 
@@ -96,8 +127,16 @@ sources:
               - unique
               - not_null
           - name: price
+            tests:
+              - not_null
+              - positive_value
           - name: name
+            tests:
+              - not_null
           - name: inventory
+            tests:
+              - not_null
+              - positive_value
           - name: _fivetra_deleted
           - name: _fivetran_synced
 
@@ -109,6 +148,9 @@ sources:
               - unique
               - not_null
           - name: discount
+            tests:
+              - not_null
+              - positive_value
           - name: status
             tests:
               - accepted_values:

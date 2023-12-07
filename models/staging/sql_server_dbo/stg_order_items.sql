@@ -9,7 +9,8 @@ source as (
 order_items as (
 
     select
-        concat(order_id,product_id) as id_order_product,
+        order_id,
+        product_id,
         quantity,
         _fivetran_deleted,
         _fivetran_synced

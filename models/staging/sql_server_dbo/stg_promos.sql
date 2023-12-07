@@ -10,7 +10,7 @@ promos as (
         promo_id as desc_promo,
         {{ dbt_utils.generate_surrogate_key(['promo_id'])}} as id_promo,
         status as desc_status,
-        {{ dbt_utils.generate_surrogate_key(['status'])}} as id_status,
+        status,
         discount,
         _fivetran_deleted,
         _fivetran_synced

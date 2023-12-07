@@ -11,7 +11,7 @@ events as (
     select
         event_id,
         page_url,
-        event_type,
+        {{ dbt_utils.generate_surrogate_key(['event_type'])}} as event_type,
         user_id,
         decode(product_id,'','9999', product_id) AS product_id,
         session_id,
@@ -28,7 +28,7 @@ casted_events as (
     select
         event_id as id_event,
         page_url,
-        event_type,
+        event_type as id_event_type,
         user_id as id_user,
         decode(product_id,'','9999', product_id) AS id_product,
         session_id as id_session,

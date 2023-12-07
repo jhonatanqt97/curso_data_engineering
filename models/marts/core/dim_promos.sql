@@ -1,8 +1,5 @@
 with 
-stg_promos as (
-    select *
-    from {{ref('stg_promos')}}
-),
+
 
 promos as (
 
@@ -12,9 +9,9 @@ promos as (
         desc_status,
         id_status,
         discount,
-        _fivetran_deleted,
         _fivetran_synced
-    from stg_promos
+    from {{ref('stg_promos')}} 
+   
 )
 
 select * from promos

@@ -13,19 +13,23 @@ orders as (
 
 combinacion as (
     select 
-        distinct(id_status) as id_status,
-        desc_status
+       distinct(status) as desc_status
 
     from promos
 
     union all
 
     select 
-        distinct({{ dbt_utils.generate_surrogate_key(['status'])}}) as  id_status,
-        des_status
-
+       distinct(status) as desc_status
     from orders
 
+),
+
+status as (
+    select
+        {{ dbt_utils.generate_surrogate_key(['desc_status'])}} as id_status,
+        desc_status
+    from combinacion
 )
 
-select * from combinacion
+select * from status
