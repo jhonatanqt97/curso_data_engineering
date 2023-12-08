@@ -20,6 +20,7 @@ orders as (
         id_tracking,
         status,
         LEFT(REPLACE({{ dbt_date.round_timestamp("delivered_at")}}, '-', ''), 8) as id_delivered_at,
+        LEFT(REPLACE({{ dbt_date.round_timestamp("O.created_at_utc")}}, '-', ''), 8) as id_created_at,
         O._fivetran_synced  
     from stg_orders O
     left join {{ref('dim_addresses')}} A on O.id_address = A.id_address
