@@ -18,7 +18,7 @@ orders as (
         order_total_$,
         delivered_at,
         id_tracking,
-        status,
+        O.status,
         LEFT(REPLACE({{ dbt_date.round_timestamp("delivered_at")}}, '-', ''), 8) as id_delivered_at,
         LEFT(REPLACE({{ dbt_date.round_timestamp("O.created_at_utc")}}, '-', ''), 8) as id_created_at,
         O._fivetran_synced  

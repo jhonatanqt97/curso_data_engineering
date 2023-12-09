@@ -5,305 +5,353 @@ models:
     description: >
       Este modelo se ha generado a partir de la tabla promos de nuestro source sql server dbo.
     columns:
-      - name: des_promo
+      - name: desc_promo
         description: >
          el nombre de la promocion
+        tests:
+          - not_null
       - name: id_promo
         description: >
           El identificador único de la promocion.
-      - name: desc_status
-        description: >
-          esatdo de la promocion
-      - name: id_status
-        description: >
-          El identificador único del estado la promocion.
+        tests:
+          - not_null
+          - unique
+      - name: status
+        data_type: varchar
+        description: "estado de la promocion"
+        tests:
+          - not_null
       - name: discount
         description: >
           cantidad de descuento de la promocion 
+        tests:
+          - not_null
+
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: "fecha de sincronizacion de datos"
 
   - name: stg_addresses
-    description: ""
+    description: "Este modelo se ha generado a partir de la tabla addresses de nuestro source sql server dbo."
     columns:
       - name: id_address
         data_type: varchar
-        description: ""
+        description: "El identificador único de la dirección"
+        tests:
+          - not_null
+          - unique
 
       - name: zipcode
         data_type: number
-        description: ""
+        description: "codigo postal de la dirección"
+        tests:
+          - not_null
 
       - name: country
         data_type: varchar
-        description: ""
+        description: "columna referente al país de la dirección"
+        tests:
+          - not_null
 
       - name: address
         data_type: varchar
-        description: ""
+        description: "nombre de la dirección"
+        tests:
+          - not_null
 
       - name: state
         data_type: varchar
-        description: ""
-
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: ""
-
+        description: "nombre del estado de la dirección"
+        tests:
+          - not_null
+     
       - name: _fivetran_synced
         data_type: timestamp_tz
-        description: ""
+        description: "fecha de sincronizacion de los datos"
+        tests:
+          - not_null
 
   - name: stg_event_type
-    description: ""
+    description: "Este modelo se ha generado a partir de la tabla events de nuestro source sql server dbo."
     columns:
       - name: id_event_type
         data_type: varchar
-        description: ""
+        description: "El identificador único del tipo de evento"
+        tests:
+          - not_null
+          - unique
 
       - name: desc_event_type
         data_type: varchar
-        description: ""
-
-  - name: stg_fechas
-    description: ""
-    columns:
-      - name: fecha_forecast
-        data_type: date
-        description: ""
-
-      - name: id_date
-        data_type: number
-        description: ""
-
-      - name: anio
-        data_type: number
-        description: ""
-
-      - name: mes
-        data_type: number
-        description: ""
-
-      - name: desc_mes
-        data_type: varchar
-        description: ""
-
-      - name: id_anio_mes
-        data_type: number
-        description: ""
-
-      - name: dia_previo
-        data_type: date
-        description: ""
-
-      - name: anio_semana_dia
-        data_type: varchar
-        description: ""
-
-      - name: semana
-        data_type: number
-        description: ""
+        description: "nombres de los ditintos tipos de eventos"
+        tests:
+          - not_null
 
   - name: stg_order_items
-    description: ""
+    description: "Este modelo se ha generado a partir de la tabla order_items de nuestro source sql server dbo."
     columns:
       - name: order_id
         data_type: varchar
-        description: ""
-
+        description: "El identificador único referente a orders"
+        tests:
+          - not_null
+        
       - name: product_id
         data_type: varchar
-        description: ""
+        description: "El identificador único referente a productos"
+        tests:
+          - not_null
 
       - name: quantity
         data_type: number
-        description: ""
-
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: ""
+        description: "cantidad de productos pedidos en una order"
+        tests:
+          - not_null
+          - positive_value
 
       - name: _fivetran_synced
         data_type: timestamp_tz
-        description: ""
+        description: "fecha de sincronizacion de los datos"
+        tests:
+          - not_null
 
   - name: stg_orders
-    description: ""
+    description: "Este modelo se ha generado a partir de la tabla orders de nuestro source sql server dbo."
     columns:
       - name: id_order
         data_type: varchar
-        description: ""
+        description: "El identificador único de las orders"
+        tests:
+          - not_null
+          - unique
 
       - name: shipping_service
         data_type: varchar
-        description: ""
-
+        description: "compañia de reparto"
+        tests:
+          - not_null
+  
       - name: shipping_cost_$
         data_type: float
-        description: ""
-
+        description: "coste de reparto"
+        tests:
+          - not_null
+        
       - name: id_address
         data_type: varchar
-        description: ""
+        description: "El identificador único de las direcciones"
+        tests:
+          - not_null
 
       - name: created_at_utc
         data_type: timestamp_ltz
-        description: ""
-
+        description: "fecha de la creacion de la order"
+        tests:
+          - not_null
+    
       - name: id_promo
         data_type: varchar
-        description: ""
+        description: "El identificador único de las promociones relacionadas con orders"
+        tests:
+          - not_null
 
       - name: estimated_delivery_at_utc
         data_type: timestamp_ltz
-        description: ""
+        description: "tiempo estimado de envio"
+        tests:
+          - not_null
 
       - name: order_cost_$
         data_type: float
-        description: ""
+        description: "costo de la order"
+        tests:
+          - not_null
 
       - name: id_user
         data_type: varchar
-        description: ""
+        description: "El identificador único de los usuarios relacionados con orders"
+        tests:
+          - not_null
 
       - name: order_total_$
         data_type: float
-        description: ""
+        description: "costo total de una orden"
+        tests:
+          - not_null
 
       - name: delivered_at
         data_type: timestamp_ltz
-        description: ""
+        description: "fecah de entrega"
+        tests:
+          - not_null
 
       - name: id_tracking
         data_type: varchar
-        description: ""
-
-      - name: id_status
-        data_type: varchar
-        description: ""
-
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: ""
+        description: "indetificador unico de seguimiento"
+        tests:
+          - not_null
 
       - name: _fivetran_synced
         data_type: timestamp_tz
-        description: ""
+        description: "fecha de sincronizacion de los datos"
+        tests:
+          - not_null
 
   - name: stg_products
-    description: ""
+    description: "Este modelo se ha generado a partir de la tabla products de nuestro source sql server dbo."
     columns:
       - name: id_product
         data_type: varchar
-        description: ""
+        description: "identificador unico del producto"
+        tests:
+          - unique
+          - not_null
 
       - name: price_$
         data_type: float
-        description: ""
+        description: "preio del producto"
+        tests:
+          - not_null
 
       - name: name
         data_type: varchar
-        description: ""
+        description: "nombre del producto"
+        tests:
+          - not_null
 
       - name: inventory
         data_type: number
-        description: ""
-
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: ""
+        description: "cantidad de producto"
+        tests:
+          - not_null
 
       - name: _fivetran_synced
         data_type: timestamp_tz
-        description: ""
+        description: "fecha de sincronizacion de los datos"
+        tests:
+          - not_null
 
   - name: stg_sql_server_dbo_events
-    description: ""
+    description: "Este modelo se ha generado a partir de la tabla eventos de nuestro source sql server dbo."
     columns:
       - name: id_event
         data_type: varchar
-        description: ""
+        description: "identificador unico del evento"
+        tests:
+          - unique
+          - not_null
 
       - name: page_url
         data_type: varchar
-        description: ""
+        description: "url de la pagina del negocio"
+        tests:
+          - not_null
 
       - name: id_event_type
         data_type: varchar
-        description: ""
+        description: "identificador unico del tipo de evento"
+        tests:
+          - not_null
 
       - name: id_user
         data_type: varchar
-        description: ""
+        description: "identificador unico del usuario relacionado con el evento"
+        tests:
+          - not_null
 
       - name: id_product
         data_type: varchar
-        description: ""
+        description: "identificador unico del producto relacionado con el evento"
+        tests:
+          - not_null
 
       - name: id_session
         data_type: varchar
-        description: ""
+        description: "identificador único de la sesion relacionado con el evento"
+        tests:
+          - not_null
 
       - name: created_at_utc
         data_type: timestamp_ltz
-        description: ""
+        description: "fecha de creacion del evento"
+        tests:
+          - not_null
 
       - name: id_order
         data_type: varchar
-        description: ""
-
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: ""
+        description: "identificador unico de la order relacionado con el evento "
+        tests:
+          - not_null
 
       - name: _fivetran_synced
         data_type: timestamp_tz
-        description: ""
+        description: "fecha de sincronizacion de los datos"
+        tests:
+          - not_null
 
   - name: stg_users
-    description: ""
+    description: "Este modelo se ha generado a partir de la tabla usuarios de nuestro source sql server dbo."
     columns:
       - name: id_user
         data_type: varchar
-        description: ""
+        description: "identificador unico del usuario"
+        tests:
+          - unique
+          - not_null
 
       - name: updated_at_utc
         data_type: timestamp_ltz
-        description: ""
+        description: "fecha de actualizacion"
+        tests:
+          - not_null
 
       - name: id_address
         data_type: varchar
-        description: ""
+        description: "identificador unico de la direccion relacionado con usuarios"
+        tests:
+          - not_null
 
       - name: last_name
         data_type: varchar
-        description: ""
+        description: "apellidos"
+        tests:
+          - not_null
 
       - name: created_at_utc
         data_type: timestamp_ltz
-        description: ""
+        description: "feacha de creacion"
+        tests:
+          - not_null
 
       - name: phone_number
         data_type: varchar
-        description: ""
+        description: "numero de telefono de los usuarios"
+        tests:
+          - not_null
 
       - name: total_orders
         data_type: number
-        description: ""
+        description: "total de orders realizado por un usuario"
+        tests:
+          - not_null
 
       - name: first_name
         data_type: varchar
-        description: ""
+        description: "nombre de los usuarios"
+        tests:
+          - not_null
 
       - name: email
         data_type: varchar
-        description: ""
-
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: ""
+        description: "correo electronico de usuarios"
+        tests:
+          - not_null
 
       - name: _fivetran_synced
         data_type: timestamp_tz
-        description: ""
+        description: "fecha de sincronizacion de los datos"
+        tests:
+          - not_null
 
   
 

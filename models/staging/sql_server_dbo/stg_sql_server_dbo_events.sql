@@ -1,8 +1,18 @@
-with 
+{{ config(
+    materialized='incremental',
+    unique_key= 'event_id',
+    on_schema_change='fail'
+    ) 
+    }}
 
-source as (
+WITH source AS (
+    SELECT * 
+    FROM {{ source('sql_server_dbo','events') }}
+{% if is_incremental() %}
 
-    select * from {{ source('sql_server_dbo', 'events') }}
+	  where _fivetran_synced > (select max(_fivetran_synced) from {{ this }})
+
+{% endif %}
 
 ),
 
