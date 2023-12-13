@@ -6,17 +6,18 @@ source as (
 
 ),
 
-renamed as (
+budget as (
 
     select
         _row,
         quantity,
+        LEFT(REPLACE({{ dbt_date.round_timestamp("month")}}, '-', ''), 8) as id_month,
         month,
-        product_id,
+        product_id as id_product,
         _fivetran_synced
 
     from source
 
 )
 
-select * from renamed
+select * from budget

@@ -13,7 +13,6 @@ events as (
         E.id_user,
         E.id_product,
         id_session,
-        E.created_at_utc,
         LEFT(REPLACE({{ dbt_date.round_timestamp("E.created_at_utc")}}, '-', ''), 8) as id_created_at_utc,
         E._fivetran_synced
     from stg_events E
