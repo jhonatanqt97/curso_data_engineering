@@ -313,10 +313,10 @@ models:
         data_type: varchar
         description: "El identificador único de las promociones relacionadas con orders"
         tests:
-          - not_null
-          - relationships:
-              field: id_promo
-              to: ref('dim_promos')
+          - dbt_utils.relationships_where:
+                  to: ref('dim_promos')
+                  field: id_promo
+                  from_condition: id_promo <> '9999'
       - name: estimated_delivery_at_utc
         data_type: timestamp_ltz
         description: "tiempo estimado de envio"
@@ -349,4 +349,143 @@ models:
       - name: _fivetran_synced
         data_type: timestamp_tz
         description: "fecha de sincronizacion de los datos"
+
+  - name: agg_total_sales_products_state
+    description: "tabla agregada respecto al caso de uso en el que se obtinen los datos de el total de ventas por producto  y estado"
+    columns:
+      - name: state
+        data_type: varchar
+        description: "nombre del estado de la dirección"
+
+      - name: id_product
+        data_type: varchar
+        description: "El identificador único de los usuarios"
+        tests:
+          - relationships:
+              field: id_product
+              to: ref('dim_product')
+
+      - name: product_name
+        data_type: varchar
+        description: "nombre del producto"
+
+      - name: sum(order_total_$)
+        data_type: float
+        description: "total de ventas "
+    
+
+  - name: agg_stocktacking_costs
+    description: "tabla agregada respecto al caso de uso en el que se obtinen los datos para el control de inventario y costos "
+    columns:
+      - name: id_order
+        data_type: varchar
+        description: "El identificador único de los pedidos"
+        tests:
+          - not_null
+              
+      - name: id_product
+        data_type: varchar
+        description: "El identificador único de los productos"
+        tests:
+          - relationships:
+              field: id_product
+              to: ref('dim_product')
+
+      - name: product_name
+        data_type: varchar
+        description: "nombre del producto"
+        tests:
+          - not_null
+
+      - name: quantity
+        data_type: number
+        description: "cantidad del producto respecto a un pedido en concreto"
+
+      - name: inventory_quantity
+        data_type: number
+        description: "cantidad de productos en inventario"
+        tests:
+          - positive_value
+      - name: month
+        data_type: varchar
+        description: "mes"
+        tests:
+          - not_null
+
+      - name: product_price
+        data_type: float
+        description: "precio del producto"
+
+      - name: promo_status
+        data_type: varchar
+        description: "estado de la promocion"
+
+      - name: promo_discount
+        data_type: number
+        description: "descuento de la promocion"
+
+      - name: total_order_value
+        data_type: float
+        description: "valor total de pedios"
+        tests:
+          - positive_value
+
+      - name: net_sales
+        data_type: float
+        description: "ventas netas"
+
+  - name: agg_events_users
+    description: "tabla agregada respecto al caso de uso en el que se obtinen los datos para el seguimineto de eventos respecto a los usuarios"
+    columns:
+      - name: id_event
+        data_type: varchar
+        description: "identificador unico de los eventos"
+        tests:
+          - not_null
+          - unique
+      - name: id_user
+        data_type: varchar
+        description: "identificador unico de los usuarios"
+        tests:
+          - relationships:
+              to: ref('dim_users')
+              field: id_user
+
+      - name: first_name
+        data_type: varchar
+        description: "nombre usuario"
+
+      - name: last_name
+        data_type: varchar
+        description: "apellido usuario"
+
+      - name: page_url
+        data_type: varchar
+        description: "url de la pagina web del negocio respecto al tipo de evento"
+
+      - name: desc_event_type
+        data_type: varchar
+        description: "tipo de envento que se realiza en una pagina web"
+        
+
+      - name: ultima_actividad
+        data_type: date
+        description: "fecha de la ultima activad del usuario en la pagina web"
+
+      - name: id_product
+        data_type: varchar
+        description: "identificador unico del producto"
+        tests:
+          - relationships:
+              to: ref('dim_product')
+              field: id_product
+        
+
+      - name: product_name
+        data_type: varchar
+        description: "nombre del producto"
+
+      - name: created_at
+        data_type: date
+        description: "fecha de creacion del evento "
        

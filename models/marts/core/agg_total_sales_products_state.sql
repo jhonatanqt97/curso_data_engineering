@@ -9,7 +9,7 @@ agregada as (
         A.state,
         P.id_product,
         P.name as product_name,
-        sum(order_total_$)
+        sum(order_total_$)  as total_ventas
     from fct_order_items I
     left join {{ref('dim_products')}} P on I.id_product = P.id_product
     left join {{ref('fact_orders')}} O on I.id_order = O.id_order 

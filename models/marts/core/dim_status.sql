@@ -20,7 +20,7 @@ combinacion as (
     union all
 
     select 
-       distinct(status) as desc_status
+       distinct(des_status) as desc_status
     from orders
 
 ),

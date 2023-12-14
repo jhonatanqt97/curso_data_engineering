@@ -90,13 +90,13 @@ models:
   - name: stg_order_items
     description: "Este modelo se ha generado a partir de la tabla order_items de nuestro source sql server dbo."
     columns:
-      - name: order_id
+      - name: id_order
         data_type: varchar
         description: "El identificador único referente a orders"
         tests:
           - not_null
         
-      - name: product_id
+      - name: id_product
         data_type: varchar
         description: "El identificador único referente a productos"
         tests:
@@ -191,6 +191,10 @@ models:
         tests:
           - not_null
 
+      - name: id_status
+        data_type: varchar
+        description: "indetificador unico del estado del pedido"
+
       - name: _fivetran_synced
         data_type: timestamp_tz
         description: "fecha de sincronizacion de los datos"
@@ -209,7 +213,7 @@ models:
 
       - name: price_$
         data_type: float
-        description: "preio del producto"
+        description: "precio del producto"
         tests:
           - not_null
 
@@ -334,6 +338,7 @@ models:
         description: "total de orders realizado por un usuario"
         tests:
           - not_null
+          - positive_value
 
       - name: first_name
         data_type: varchar

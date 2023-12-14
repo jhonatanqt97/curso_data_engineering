@@ -33,7 +33,8 @@ orders as (
         order_total,
         decode(delivered_at,null,'9999',delivered_at) AS delivered_at,
         decode(tracking_id,'','vacio',tracking_id) AS tracking_id,
-        {{ dbt_utils.generate_surrogate_key(['status'])}} as status,
+        status as des_status,
+        {{ dbt_utils.generate_surrogate_key(['status'])}} as id_status,
         _fivetran_deleted,
         _fivetran_synced
 
@@ -62,7 +63,8 @@ orders_casted as (
         order_total as order_total_$,
         cast(delivered_at as timestamp_ltz) as delivered_at,
         tracking_id as id_tracking,
-        status as id_status,
+        id_status,
+        des_status,
         _fivetran_deleted,
         _fivetran_synced 
 

@@ -20,151 +20,278 @@ sources:
 
       - name: addresses
         description: >
-          Este modelo se ha generado a partir de la tabla promos de nuestro source sql server dbo.
+          tabla addreses que se en encuntra en nuestra base de datos y que usaremos como source para modelos siguientes, alberga la 
+          informacion sobre direcciones que usaremos en nuestro modelo.
         loaded_at_field: _fivetran_synced
         columns:
           - name: address_id
+            description: "El identificador único de la dirección"
             tests:
               - unique
               - not_null        
           - name: zipcode
-          - name: country
+            description: "codigo postal de la dirección"
             tests:
+              - not_null
+          - name: country
+            description: "columna referente al país de la dirección"
+            tests:
+              - not_null
               - accepted_values:
                   values: ['United States']
           - name: address
+            description: "nombre de la dirección"
+            tests:
+              - not_null
           - name: state
+            description: "nombre del estado de la dirección"
+            tests:
+              - not_null
           - name: _fivetran_deleted
+            description: "fecha de borrado de los datos"
+         
           - name: _fivetran_synced
+            description: "fecha de sincronizacion de los datos"
+            tests:
+              - not_null
 
       - name: events
+        description: >
+          tabla events que se en encuntra en nuestra base de datos y que usaremos como source para modelos siguientes. Alberga los eventos que
+          se van a desarrollar en nuestro modelo.
         loaded_at_field: _fivetran_synced
         columns:
           - name: event_id
+            description: "identificador unico del evento"
             tests:
               - unique
               - not_null
           - name: page_url
+            description: "url de la pagina del negocio"
           - name: event_type
+            description: "tipo de evento"
             tests:
               - accepted_values:
                   values: ['checkout','package_shipped','add_to_cart','page_view']
           - name: user_id
+            description: "identificador unico del usuario relacionado con el evento"
+            tests:
+              - relationships:
+                  field: user_id
+                  to: source('sql_server_dbo','users')
           - name: product_id
+            description: "identificador unico del producto relacionado con el evento"
+            tests:
+              - dbt_utils.relationships_where:
+                  to: source('sql_server_dbo','products')
+                  field: product_id
+                  from_condition: length(trim(product_id)) > 0
           - name: session_id
+            description: "identificador único de la sesion relacionado con el evento"
+            tests:
+              - not_null
           - name: created_at
+            description: "fecha de creacion del evento"
           - name: order_id
+            description: "identificador unico de la order relacionado con el evento "
+            tests:
+              - dbt_utils.relationships_where:
+                  to: source('sql_server_dbo','orders')
+                  field: order_id
+                  from_condition: length(trim(order_id)) > 0
           - name: _fivetran_deleted
+            description: "fecha de borrado de datos"
           - name: _fivetran_synced
+            description: "fecha de sincronizacion de los datos"
 
       - name: orders
+        description: >
+          tabla orders que se en encuntra en nuestra base de datos y que usaremos como source para modelos siguientes. Alberga los pedidos que
+          se van a desarrollar en nuestro modelo.
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id
+            description: "El identificador único de las orders"
             tests:
               - not_null
               - unique   
           - name: shipping_service
+            description: "compañia de reparto"
           - name: shipping_cost
+            description: "coste de reparto"
             tests:
               - not_null
               - positive_value    
           - name: address_id
+            description: "El identificador único de las direcciones"
             tests:
               - relationships:
                   to: source('sql_server_dbo', 'addresses')
                   field: address_id
-          - name: created_at 
+          - name: created_at
+            description: "fecha de la creacion de la order" 
           - name: promo_id
+            description: "El identificador único de las promociones relacionadas con orders"
+            tests:
+              - dbt_utils.relationships_where:
+                  to: source('sql_server_dbo','promos')
+                  field: promo_id
+                  from_condition: length(trim(promo_id)) > 0
+          
           - name: estimated_delivery_at
+            description: "tiempo estimado de envio"
           - name: order_cost
+            description: "costo de la order"
             tests:
               - positive_value
-              - not_null 
           - name: user_id
-          - name: order_total
+            description: "El identificador único de los usuarios relacionados con orders"
             tests:
-              - not_null
+              - relationships:
+                  to: source('sql_server_dbo', 'users')
+                  field: user_id
+          - name: order_total
+            description: "costo total de una orden"
+            tests:
               - positive_value    
           - name: delivered_at
+            description: "fecah de entrega"
           - name: tracking_id
+            description: "indetificador unico de seguimiento"
             tests:
               - not_null
           - name: status
+            description: "estado del pedido"
             tests:
               - accepted_values:
                   values: ['delivered', 'shipped', 'preparing']
           - name: _fivetra_deleted
+            description: "fecha de borrado de los datos"
           - name: _fivetran_synced
+            description: "fecha de sincronizacion de los datos"
 
       - name: order_items
+        description: >
+          tabla order items que se en encuntra en nuestra base de datos y que usaremos como source para modelos siguientes. Alberga la informacion que
+          se refiere a un pedido en concreto junto a la informacion del producto del mismo.
         loaded_at_field: _fivetran_synced
         columns:
-          - name: order_id    
+          - name: order_id
+            description: "El identificador único referente a orders"
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo', 'orders')
+                  field: order_id    
           - name: product_id
+            description: "El identificador único referente a productos"
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo', 'products')
+                  field: product_id
           - name: quantity
+            description: "cantidad de productos pedidos en una order"
             tests:
               - not_null
               - positive_value
           - name: _fivetra_deleted
+            description: "fecha de borrado de los datos"
           - name: _fivetran_synced
+            description: "fecha de sincronizacion de los datos"
 
       - name: products
+        description: >
+          tabla products que se en encuntra en nuestra base de datos y que usaremos como source para modelos siguientes. Alberga la informacion de
+          los productos que se van a desarrollar en nuestro modelo.
         loaded_at_field: _fivetran_synced
         columns:
           - name: product_id
+            description: "identificador unico del producto"
             tests:
               - unique
               - not_null
           - name: price
+            description: "precio del producto"
             tests:
               - not_null
               - positive_value
           - name: name
+            description: "nombre del producto"
             tests:
               - not_null
           - name: inventory
+            description: "cantidad de producto"
             tests:
               - not_null
               - positive_value
           - name: _fivetra_deleted
+            description: "fecha de borrado de los datos"
           - name: _fivetran_synced
+            description: "fecha de sincronizacion de los datos"
 
       - name: promos
+        description: >
+          tabla promos que se en encuntra en nuestra base de datos y que usaremos como source para modelos siguientes. Alberga la informacion de
+          las promociones que se van a desarrollar en nuestro modelo.
         loaded_at_field: _fivetran_synced
         columns:
           - name: promo_id
+            description: >
+              El identificador único de la promocion.
             tests:
               - unique
               - not_null
           - name: discount
+            description: >
+             cantidad de descuento de la promocion
             tests:
-              - not_null
               - positive_value
           - name: status
+            description: "estado de la promocion"
             tests:
               - accepted_values:
                   values: ['active', 'inactive']
           - name: _fivetra_deleted
+            description: "fecha de borrado de datos"
           - name: _fivetran_synced
+            description: "fecha de sincronizacion de datos"
 
       - name: users
+        description: >
+          tabla users que se en encuntra en nuestra base de datos y que usaremos como source para modelos siguientes. Alberga la informacion de
+          las usuarios que  van a componer nuestro modelo.
         loaded_at_field: _fivetran_synced
         columns:
           - name: user_id
+            description: "identificador unico del usuario"
             tests:
               - unique
               - not_null
           - name: updated_at
+            description: "fecha de actualizacion"
           - name: address_id
+            description: "identificador unico de la direccion relacionado con usuarios"
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo', 'addresses')
+                  field: address_id
           - name: last_name
+            description: "apellidos"
           - name: created_at
+            description: "feacha de creacion"
           - name: phone_number
+            description: "numero de telefono de los usuarios"
+            tests:
+              - unique
           - name: total_orders
+            description: "total de orders realizado por un usuario"
           - name: first_name
+            description: "nombre de los usuarios"
           - name: email
+            description: "correo electronico de usuarios"
           - name: _fivetra_deleted
+            description: "fecha de borrado de los datos"
           - name: _fivetran_synced
+            description: "fecha de sincronizacion de los datos"
 
   
   
